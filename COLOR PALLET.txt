@@ -1,0 +1,2 @@
+GOLDEN     #c1a14a
+form color   #f4d992
