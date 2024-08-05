@@ -87,12 +87,13 @@
                       id="averageTime"
                       class="w-100 border rounded p-1 my-1"
                       v-model="averageTime"
-                      
                     />
                   </div>
                   <!-- AVERAGE TIME END -->
                   <!-- ENTER LINK START -->
-                  <label for="link" class="form-label">Enter Link | Whatsapp</label>
+                  <label for="link" class="form-label"
+                    >Enter Link or Whatsapp Number</label
+                  >
                   <div class="w-100">
                     <input
                       type="text"
@@ -101,7 +102,7 @@
                       v-model="link"
                       placeholder="https:"
                       class="w-100 border rounded p-1 my-1"
-                      
+                      required
                     />
                   </div>
                   <!-- ENTER LINK END -->
@@ -141,6 +142,7 @@
                     class="btn mb-5 mt-4"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
+                    :disabled="!isFormValid"
                   >
                     Place Order
                   </button>
@@ -174,9 +176,12 @@
                         </div>
                         <div class="modal-body">
                           As you will click on "Close" Button you will be
-                          redirected to Whatapp.Pay your charges there !!!!.Thanks
-                          <hr>
-                          جب آپ “بند کریں” کے بٹن پر کلک کریں گے آپ کو واٹس ایپ پر بھیج دیا جائے گا۔ وہاں اپنے چارجز ادا کریں!!!!. شکریہ
+                          redirected to Whatapp.Pay your charges there
+                          !!!!.Thanks
+                          <hr />
+                          جب آپ “بند کریں” کے بٹن پر کلک کریں گے آپ کو واٹس ایپ
+                          پر بھیج دیا جائے گا۔ وہاں اپنے چارجز ادا کریں!!!!.
+                          شکریہ
                         </div>
                         <div class="modal-footer">
                           <button
@@ -185,8 +190,7 @@
                             data-bs-dismiss="modal"
                             @click="redirectToWhatsapp"
                           >
-                            Close |
-                            بند کریں
+                            Close | بند کریں
                           </button>
                         </div>
                       </div>
@@ -231,6 +235,7 @@ export default {
       charges: null,
       link: "",
       serviceName: "",
+      formData: null,
     };
   },
 
@@ -251,6 +256,7 @@ export default {
         );
         console.log("Form submitted sexfully", response.data.message);
         // alert("Order Placed");
+        this.formData = formData;
         this.amount = 0;
         this.link = " ";
         this.charges = 0;
@@ -263,13 +269,12 @@ export default {
     },
     redirectToWhatsapp() {
       setTimeout(() => {
-        
-        const whatsappMessage = `I have Placed this Order  \nService: ${this.serviceName}\nLink: ${this.link}  \nAmount: ${this.amount} \nCharges: ${this.charges} \nPlease share with me payment details`;
+        const whatsappMessage = `I have Placed this Order  \nService: ${this.serviceName}\nLink: ${this.formData.link}  \nAmount: ${this.formData.amount} \nCharges: ${this.formData.charges} \nPlease share with me payment details`;
         const whatsappUrl = `https://wa.me/+923196776552?text=${encodeURIComponent(
           whatsappMessage
         )}`;
         window.location.href = whatsappUrl;
-      },);
+      });
     },
 
     async fetchCategories() {
@@ -339,6 +344,16 @@ export default {
     if (!user) {
       this.$router.push("/login");
     }
+  },
+  computed: {
+    isFormValid() {
+      return (
+        this.selectedServiceId &&
+        this.amount &&
+        this.charges &&
+        this.link
+      );
+    },
   },
 };
 </script>

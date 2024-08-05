@@ -161,7 +161,7 @@ export default {
           
            console.log("Backend sa  ya data araha ha ",user)
 
-           localStorage.setItem("user", user.name);
+           localStorage.setItem('user', user.name);
            localStorage.setItem("token",token);
 
            axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;

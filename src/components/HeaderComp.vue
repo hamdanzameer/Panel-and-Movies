@@ -105,7 +105,7 @@ export default {
   },
   created(){
 
-    // this.loginUser = JSON.parse(localStorage.getItem('user'))
+    this.loginUser = localStorage.getItem('user')
   }
 }
 </script>

@@ -5,7 +5,10 @@
       <div class="container-fluid mt-5 mb-5">
         <!-- Form Start -->
         <div class="row justify-content-center">
-          <div class="col-md-6 p-sm-5 border rounded-5" style="background-color: #f4d992">
+          <div
+            class="col-md-6 p-sm-5 border rounded-5"
+            style="background-color: #f4d992"
+          >
             <div class="form-floating m-4 mb-3">
               <input
                 type="email"
@@ -44,12 +47,11 @@
                 placeholder="Password"
                 v-model="password"
               />
-              
+
               <label for="floatingInputPassword">Password</label>
               <div id="passwordHelpBlock" class="form-text">
-                Your password must be 8-20 characters long, contain letters
-                and numbers, and must not contain spaces, special characters,
-                or emoji.
+                Your password can contain letters , numbers,or special
+                characters and must not contain spaces.
               </div>
             </div>
             <div class="form-floating m-4">
@@ -62,7 +64,9 @@
               />
               <label for="floatingInputConfirmPassword">Confirm Password</label>
             </div>
-            <div v-if="password !== confirmpassword" style="color: red;">Passwords do not match.</div>
+            <div v-if="password && confirmpassword && password !== confirmpassword" style="color: red">
+              Password and condirm Password  do not match.
+            </div>
             <div class="mb-3 form-check m-4">
               <input
                 type="checkbox"
@@ -105,28 +109,28 @@ focus
 <script>
 import FooterComp from "./FooterComp.vue";
 import HeaderComp from "./HeaderComp.vue";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "SignUpComp",
   components: {
     HeaderComp,
-    FooterComp
+    FooterComp,
   },
   data() {
     return {
-      email: '',
-      name: '',
-      username: '',
-      password: '',
-      confirmpassword:'',
-      terms:false,
+      email: "",
+      name: "",
+      username: "",
+      password: "",
+      confirmpassword: "",
+      terms: false,
     };
   },
   methods: {
     async signup() {
       try {
-        const response = await axios.post('http://localhost:4000/signup', {
+        const response = await axios.post("http://localhost:4000/signup", {
           email: this.email,
           name: this.name,
           username: this.username,
@@ -135,38 +139,34 @@ export default {
         // console.log(response.data);
         if (response.status === 200) {
           alert("Signup Successful");
-          this.$router.push({name :"Home"})
+          this.$router.push({ name: "Home" });
         }
         if (response.status === 201) {
           alert("Signup Successful");
-          this.$router.push({name :"LoginComp"})
+          this.$router.push({ name: "LoginComp" });
         }
       } catch (error) {
-        console.error('Axios Error:', error);
+        console.error("Axios Error:", error);
         alert("Signup Failed");
       }
     },
-    async submitForm(){
-      if(this.password !== this.confirmpassword){
+    async submitForm() {
+      if (this.password !== this.confirmpassword) {
         alert("Password and Confirm Password are not same");
-        return  ;
+        return;
       }
-      if(!this.terms){
+      if (!this.terms) {
         alert("Please accept terms and conditions");
       }
 
-
       await this.signup();
-    
+    },
+  },
+  mounted() {
+    // this.$refs.password.focus();
+    if (localStorage.getItem("user")) {
+      this.$router.push("/");
     }
   },
-  mounted(){
-    // this.$refs.password.focus();
-    if(localStorage.getItem('user')){
-      this.$router.push('/')
-    }
-  }
-  
 };
 </script>
-
