@@ -150,7 +150,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post("http://localhost:4000/login", {
+        const response = await axios.post("http://localhost:4000/login",{
           email: this.email,
           password: this.password,
         });
@@ -163,6 +163,7 @@ export default {
 
            localStorage.setItem('user', user.name);
            localStorage.setItem("token",token);
+           sessionStorage.setItem("token",token)
 
            axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
           this.errorMessage = "";
@@ -212,6 +213,7 @@ export default {
   },
   mounted() {
     // this.$router.push("/login")
+    console.log(process.env.LOGIN_API)
     if (localStorage.getItem("user")) {
       this.$router.push("/");
     }
