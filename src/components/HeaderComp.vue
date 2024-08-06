@@ -79,7 +79,7 @@
 
 <script>
 import { Modal } from 'bootstrap';
-import Cookies from "js-cookie"
+import Cookies from 'js-cookie';
 
 export default {
   name: "HeaderComp",
@@ -87,47 +87,59 @@ export default {
     return {
       loginUser: '',
       isLoggedIn: false,
-
-      // JSON.parse(localStorage.getItem("loginUser")),
-
-    }
+    };
   },
   methods: {
-    handleSignOut() {
-      Cookies.remove("token");
-      Cookies.remove("user");
+  handleSignOut() {
+    Cookies.remove('token');
+    Cookies.remove('user');
 
-      const modalElement = document.getElementById('confirmSignOutModal');
-      if (modalElement) {
-        const modalInstance = Modal.getInstance(modalElement) || new Modal(modalElement);
-        modalInstance.hide();
-      }
-      this.isLoggedIn = false;
-      this.loginUser = " ";
-      this.$router.push('/login');
+    const modalElement = document.getElementById('confirmSignOutModal');
+    if (modalElement) {
+      const modalInstance = Modal.getInstance(modalElement) || new Modal(modalElement);
+      modalInstance.hide();
     }
+    this.isLoggedIn = false;
+    this.loginUser = '';
+    this.$router.push('/login');
   },
-  mounted(){
-    // window.addEventListner()
-   const user = Cookies.get('user')
-   if(user) {
-   this.loginUser = user;
-   this.isLoggedIn = true;
+  startPolling() {
+    this.pollingInterval = setInterval(() => {
+      const token = Cookies.get('token');
+      const user = Cookies.get('user');
+
+      if (!token || !user) {
+        this.handleSignOut();
+      }
+    }, 1000); 
+  },
+},
+mounted() {
+  this.startPolling();  
+
+  const token = Cookies.get('token');
+  const user = Cookies.get('user');
+  if (user && token) {
+    this.loginUser = user;
+    this.isLoggedIn = true;
   } else {
     this.isLoggedIn = false;
-
   }
-  
 },
+beforeUnmount() {
+  clearInterval(this.pollingInterval);
 }
+}
+
 </script>
 
 <style scoped>
 .navbar {
   background-color: #c1a14a;
 }
-.fw-bold{
-  font-weight : bold !important;
+
+.fw-bold {
+  font-weight: bold !important;
 }
 
 .dropdown-hover:hover .dropdown-menu {

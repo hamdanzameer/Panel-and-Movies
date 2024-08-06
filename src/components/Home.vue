@@ -214,6 +214,7 @@
 import axios from "axios";
 import HeaderComp from "./HeaderComp.vue";
 import FooterComp from "./FooterComp.vue";
+import Cookies from "js-cookie"
 
 export default {
   name: "HomePage",
@@ -322,7 +323,7 @@ export default {
 
     async placeOrder() {
       try {
-        const userId = localStorage.getItem("user");
+        const userId = Cookies.get("user");
         const orderData = {
           userId,
           categoryId: this.selectedCategory,
@@ -340,7 +341,7 @@ export default {
   mounted() {
     this.fetchCategories();
     this.calculateCharges();
-    const user = localStorage.getItem("user");
+    const user = Cookies.get("user");
     if (!user) {
       this.$router.push("/login");
     }
