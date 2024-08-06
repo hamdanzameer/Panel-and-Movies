@@ -79,6 +79,7 @@
 
 <script>
 import { Modal } from 'bootstrap';
+import Cookies from "js-cookie"
 
 export default {
   name: "HeaderComp",
@@ -93,8 +94,8 @@ export default {
   },
   methods: {
     handleSignOut() {
-      localStorage.clear();
-      sessionStorage.clear();
+      Cookies.remove("token");
+      Cookies.remove("user");
 
       const modalElement = document.getElementById('confirmSignOutModal');
       if (modalElement) {
@@ -107,7 +108,8 @@ export default {
     }
   },
   mounted(){
-   const user = localStorage.getItem('user')
+    // window.addEventListner()
+   const user = Cookies.get('user')
    if(user) {
    this.loginUser = user;
    this.isLoggedIn = true;

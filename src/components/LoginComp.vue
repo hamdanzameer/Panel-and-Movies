@@ -133,6 +133,7 @@
 import HeaderComp from "./HeaderComp.vue";
 import FooterComp from "./FooterComp.vue";
 import axios from "axios";
+import Cookies from "js-cookie"
 export default {
   name: "LoginComp",
   components: {
@@ -161,9 +162,9 @@ export default {
           
            console.log("Backend sa  ya data araha ha ",user)
 
-           localStorage.setItem('user', user.name);
-           localStorage.setItem("token",token);
-           sessionStorage.setItem("token",token)
+           Cookies.set('user', user.name);
+           Cookies.set("token",token);
+          //  sessionStorage.setItem("token",token)
 
            axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
           this.errorMessage = "";
@@ -214,28 +215,18 @@ export default {
   mounted() {
     // this.$router.push("/login")
     console.log(process.env.LOGIN_API)
-    if (localStorage.getItem("user")) {
+    if (Cookies.get("user")) {
       this.$router.push("/");
     }
   },
   created(){
-    const token = localStorage.getItem('token')
+    const token = Cookies.get('token')
     if (token){
       this.token=token ;
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
   },
-  // computed:{
-  //   username(){
-    
-  //     const Data =localStorage.getItem('username');
-  //     const userData =JSON.parse(Data)
-  //     console.log(userData);
-  //     return userData.username;
-  //   }
-
-    
-  // },
+ 
 };
 </script>
 

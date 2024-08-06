@@ -110,6 +110,7 @@ focus
 import FooterComp from "./FooterComp.vue";
 import HeaderComp from "./HeaderComp.vue";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export default {
   name: "SignUpComp",
@@ -164,7 +165,7 @@ export default {
   },
   mounted() {
     // this.$refs.password.focus();
-    if (localStorage.getItem("user")) {
+    if (Cookies.get("user")) {
       this.$router.push("/");
     }
   },
