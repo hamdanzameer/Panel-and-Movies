@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNavDropdown">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link active fw-bold" aria-current="page" href="#">Home</a>
+              <a class="nav-link active  fw-bold " aria-current="page" href="#">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link fw-bold" href="#">Features</a>
@@ -37,8 +37,8 @@
             <li class="nav-item">
               <!-- CONFIRMATION MODAL START -->
               <div>
-                <button type="button" class="btn text-decoration-none" data-bs-toggle="modal"
-                  data-bs-target="#confirmSignOutModal">
+                <button type="button" class="btn text-decoration-none fw-bold" data-bs-toggle="modal"
+                  data-bs-target="#confirmSignOutModal" v-if="isLoggedIn">
                   Sign Out
                 </button>
                 <!-- Confirmation Modal -->
@@ -65,7 +65,7 @@
             </li>
           </ul>
           
-          <ul class="navbar-nav d-flex flex-row-reverse fw-bold">
+          <ul class="navbar-nav d-flex flex-row-reverse fw-bold" v-if="isLoggedIn">
             
            UserName : {{  loginUser }}
           </ul>
@@ -85,6 +85,7 @@ export default {
   data() {
     return {
       loginUser: '',
+      isLoggedIn: false,
 
       // JSON.parse(localStorage.getItem("loginUser")),
 
@@ -100,19 +101,31 @@ export default {
         const modalInstance = Modal.getInstance(modalElement) || new Modal(modalElement);
         modalInstance.hide();
       }
+      this.isLoggedIn = false;
+      this.loginUser = " ";
       this.$router.push('/login');
     }
   },
-  created(){
+  mounted(){
+   const user = localStorage.getItem('user')
+   if(user) {
+   this.loginUser = user;
+   this.isLoggedIn = true;
+  } else {
+    this.isLoggedIn = false;
 
-    this.loginUser = localStorage.getItem('user')
   }
+  
+},
 }
 </script>
 
 <style scoped>
 .navbar {
   background-color: #c1a14a;
+}
+.fw-bold{
+  font-weight : bold !important;
 }
 
 .dropdown-hover:hover .dropdown-menu {
