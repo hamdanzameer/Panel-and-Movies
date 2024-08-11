@@ -15,10 +15,10 @@
         <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNavDropdown">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link active  fw-bold " aria-current="page" href="#">Home</a>
+              <a class="nav-link active  fw-bold " aria-current="page" :href="`/`">Panel</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fw-bold" href="#">Features</a>
+              <a class="nav-link fw-bold" :href="`/movies`">Movies</a>
             </li>
             <li class="nav-item">
               <a class="nav-link fw-bold" href="#">Pricing</a>
@@ -103,16 +103,19 @@ export default {
     this.loginUser = '';
     this.$router.push('/login');
   },
-  startPolling() {
-    this.pollingInterval = setInterval(() => {
+ startPolling() {
+  this.pollingInterval = setInterval(() => {
+    if (this.$route.path !== '/signup') {
       const token = Cookies.get('token');
       const user = Cookies.get('user');
 
       if (!token || !user) {
         this.handleSignOut();
       }
-    }, 1000); 
-  },
+    }
+  }, 1000);
+}
+
 },
 mounted() {
   this.startPolling();  

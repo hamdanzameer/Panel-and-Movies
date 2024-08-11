@@ -130,10 +130,12 @@
 </template>
 
 <script>
+import axios from "axios";
 import HeaderComp from "./HeaderComp.vue";
 import FooterComp from "./FooterComp.vue";
-import axios from "axios";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
+import { useToast } from 'vue-toastification';
+
 export default {
   name: "LoginComp",
   components: {
@@ -148,6 +150,10 @@ export default {
       passwordErrorMessage: "",
     };
   },
+  setup(){
+    const toast = useToast();
+    return {toast};
+  },
   methods: {
     async login() {
       try {
@@ -160,22 +166,23 @@ export default {
            const user = response.data.user;
            const token = response.data.token;
           
-           console.log("Backend sa  ya data araha ha ",user)
+           this.toast.info("Login Successful !")
+           await new Promise (resolve => setTimeout(resolve,2000));
 
            Cookies.set('user', user.name);
            Cookies.set("token",token);
-          //  sessionStorage.setItem("token",token)
 
            axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
           this.errorMessage = "";
           this.passwordErrorMessage = "", 
           this.$router.push("/");
       } catch (error) {
+        this.toast.error("Login Failed")
         console.error(
           "Error logging in:",
           error.response?.data?.error || error.message
         );
-        console.error("Error logingin ", error.message);
+        console.error("Error loging in !", error.message);
         if (
           error.message &&
           error.response.data &&
@@ -213,12 +220,11 @@ export default {
     },
   },
   mounted() {
-    // this.$router.push("/login")
-    console.log(process.env.LOGIN_API)
-    if (Cookies.get("user")) {
-      this.$router.push("/");
-    }
-  },
+  if (Cookies.get("user")) {
+    this.$router.push("/");
+  }
+},
+
   created(){
     const token = Cookies.get('token')
     if (token){
@@ -236,7 +242,7 @@ export default {
   font-weight: bold;
 }
 .error-message {
-  margin-top: 10px;
+  margin-top: 0px;
   color: red;
 }
 </style>

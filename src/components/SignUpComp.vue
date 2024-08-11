@@ -137,7 +137,6 @@ export default {
           username: this.username,
           password: this.password,
         });
-        // console.log(response.data);
         if (response.status === 200) {
           alert("Signup Successful");
           this.$router.push({ name: "Home" });
@@ -164,7 +163,6 @@ export default {
     },
   },
   mounted() {
-    // this.$refs.password.focus();
     if (Cookies.get("user")) {
       this.$router.push("/");
     }

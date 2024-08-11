@@ -338,14 +338,14 @@ export default {
       }
     },
   },
-  mounted() {
-    this.fetchCategories();
-    this.calculateCharges();
-    const user = Cookies.get("user");
-    if (!user) {
-      this.$router.push("/login");
-    }
-  },
+  // mounted() {
+  //   this.fetchCategories();
+  //   this.calculateCharges();
+  //   const user = Cookies.get("user");
+  //   if (!user) {
+  //     this.$router.push("/login");
+  //   }
+  // },
   computed: {
     isFormValid() {
       return (

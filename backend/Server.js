@@ -6,6 +6,7 @@ const User = require("./Users");
 const orders = require("../backend/models/ordersinfo");
 const checkcat = require("../backend/models/newcategories");
 const mongoose = require("mongoose");
+const moviesRouter = require("./MoviesServer")
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -22,6 +23,9 @@ db.once("open", () => {
   console.log("Connected to database MongoDB");
 });
 // DATA BSE CONFIGURATION END
+
+app.use("",moviesRouter)
+
 
 // SUBMIT ORDER API START
 app.post("/submit-order", async (req, resp) => {
@@ -132,6 +136,6 @@ app.get("/category", async (req, resp) => {
 });
 // CATEGORIES API END
 
-app.listen(port, () =>
+app.listen(process.env.PORT, () =>
   console.log(`server running on http://localhost:${port}`)
 );
